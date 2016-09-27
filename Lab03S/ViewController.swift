@@ -10,7 +10,7 @@ import UIKit
 
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var LabSalary: UILabel!
     
     @IBOutlet weak var SliderSalary: UISlider!
@@ -48,19 +48,17 @@ class ViewController: UIViewController {
         
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func startTimer(sender: UIButton) {
         
         if(!timer.valid){
             timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: #selector(ViewController.updateCounter), userInfo: nil, repeats: true)
         }
-        
-
     }
     
     @IBAction func stopTimer(sender: UIButton) {
@@ -77,8 +75,8 @@ class ViewController: UIViewController {
         
         updateSalary = updateSalary + secondSalary
         
-        LabSecondSalary.text = String.localizedStringWithFormat("$ %0.2f", updateSalary)
+        LabSecondSalary.text = String.localizedStringWithFormat("$ %0.4f", updateSalary)
     }
-
+    
 }
 
