@@ -10,14 +10,14 @@ import UIKit
 
 
 class ViewController: UIViewController {
-    
+
     @IBOutlet weak var LabSalary: UILabel!
     
     @IBOutlet weak var SliderSalary: UISlider!
     
     @IBOutlet weak var LabSecondSalary: UILabel!
     
-    private var currentSalary:Int = 0
+    private var annualSalary:Int = 0
     
     private var timer = NSTimer()
     
@@ -38,22 +38,31 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        currentSalary = Int(SliderSalary.value)
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        if let salaryValue:Float = userDefaults.floatForKey("AnnualSalaryKey")
+        {
+            SliderSalary.value = salaryValue
+        }
+        else{
+            SliderSalary.value = SliderSalary.minimumValue
+
+        }
         
-        LabSalary.text = "Annual Salary: $ \(currentSalary)"
+        annualSalary = Int(SliderSalary.value)
+        
+        LabSalary.text = "Annual Salary: $ \(annualSalary)"
         
         updateSalary = 0
         
-        secondSalary = Double(currentSalary)/DAY/HOUR/MINUTES/SECOND
-        
+        secondSalary = Double(annualSalary)/DAY/HOUR/MINUTES/SECOND
         
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     @IBAction func startTimer(sender: UIButton) {
         
         if(!timer.valid){
@@ -66,9 +75,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func sliderValueChanged(sender: UISlider) {
-        currentSalary = Int(sender.value)
-        LabSalary.text = "Annual Salary: $ \(currentSalary)"
-        secondSalary = Double(currentSalary)/DAY/HOUR/MINUTES/SECOND
+        annualSalary = Int(sender.value)
+        LabSalary.text = "Annual Salary: $ \(annualSalary)"
+        secondSalary = Double(annualSalary)/DAY/HOUR/MINUTES/SECOND
+    }
+    
+    @IBAction func saveValue(sender: UIButton) {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setFloat(SliderSalary.value, forKey: "AnnualSalaryKey")
+        
+        userDefaults.setObject(LabSecondSalary.text, forKey: "CurrentIncomeKey")
     }
     
     func updateCounter() {
@@ -77,6 +93,6 @@ class ViewController: UIViewController {
         
         LabSecondSalary.text = String.localizedStringWithFormat("$ %0.4f", updateSalary)
     }
-    
+
 }
 
