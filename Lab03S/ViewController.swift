@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     
     private var secondSalary:Double = 0
     
-    private var updateSalary:Double = 0
+    private var currentIncome:Double = 0
     
     
     override func viewDidLoad() {
@@ -48,11 +48,21 @@ class ViewController: UIViewController {
 
         }
         
+        if let incomeValue:Double = userDefaults.doubleForKey("CurrentIncomeKey"){
+            
+            currentIncome = incomeValue
+
+        }
+        else{
+            
+            currentIncome = 0
+        }
+        
         annualSalary = Int(SliderSalary.value)
         
         LabSalary.text = "Annual Salary: $ \(annualSalary)"
         
-        updateSalary = 0
+        LabSecondSalary.text = String.localizedStringWithFormat("$ %0.4f", currentIncome)
         
         secondSalary = Double(annualSalary)/DAY/HOUR/MINUTES/SECOND
         
@@ -84,14 +94,14 @@ class ViewController: UIViewController {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setFloat(SliderSalary.value, forKey: "AnnualSalaryKey")
         
-        userDefaults.setObject(LabSecondSalary.text, forKey: "CurrentIncomeKey")
+        userDefaults.setDouble(currentIncome, forKey: "CurrentIncomeKey")
     }
     
     func updateCounter() {
         
-        updateSalary = updateSalary + secondSalary
+        currentIncome = currentIncome + secondSalary
         
-        LabSecondSalary.text = String.localizedStringWithFormat("$ %0.4f", updateSalary)
+        LabSecondSalary.text = String.localizedStringWithFormat("$ %0.4f", currentIncome)
     }
 
 }
